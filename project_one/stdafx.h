@@ -21,6 +21,7 @@
 #include <vector>
 #include "gl_log.h"
 #include <tchar.h>
+#include "Skybox.h"
 #include "shaders.hpp"
 #include "openglContext.hpp"
 #include "Camera.hpp"
@@ -28,4 +29,5 @@
 #include "vboindexer.hpp"
 #include "stb_image.h"
 #include <vector>
+
 // TODO: reference additional headers your program requires here

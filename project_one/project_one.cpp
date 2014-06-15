@@ -121,6 +121,8 @@ int main(void)
 	openglContext.setViewMatrix(openglContext.texture_program, view_matrix);
 	openglContext.setProjMatrix(openglContext.texture_program, proj_matrix);
 	openglContext.setModelMatrix(openglContext.texture_program, glm::mat4(1.0));
+	openglContext.setViewMatrix(openglContext.skybox_program, view_matrix);
+	openglContext.setProjMatrix(openglContext.skybox_program, proj_matrix);
 
 	/*fps variables*/
 	if (FPS_COUNT)
@@ -203,6 +205,8 @@ int main(void)
 			glm::mat4 view_matrix = glm::lookAt(cam.cam_pos, cam.cam_target, cam.cam_up_direction);
 			openglContext.setViewMatrix(openglContext.shader_program, view_matrix);
 			openglContext.setViewMatrix(openglContext.texture_program, view_matrix);
+			//cam_target - cam_pos is the camera direction vector
+			openglContext.setViewMatrix(openglContext.skybox_program, glm::lookAt(glm::vec3(0, 0, 0), cam.cam_target - cam.cam_pos, cam.cam_up_direction));
 			cam_moved = false;
 		}
 		openglContext.renderScene();

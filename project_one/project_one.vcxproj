@@ -154,6 +154,7 @@
     <ClInclude Include="gl_log.h" />
     <ClInclude Include="openglContext.hpp" />
     <ClInclude Include="shaders.hpp" />
+    <ClInclude Include="Skybox.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="stdafx.h" />
@@ -167,12 +168,15 @@
     <ClCompile Include="openglContext.cpp" />
     <ClCompile Include="project_one.cpp" />
     <ClCompile Include="shaders.cpp" />
+    <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="stb_image.c" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="vboindexer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="skybox_fs.glsl" />
+    <None Include="skybox_vs.glsl" />
     <None Include="test_fs.glsl" />
     <None Include="texture_fs.glsl" />
     <None Include="texture_vs.glsl" />

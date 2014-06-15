@@ -148,6 +148,21 @@ void OpenGLContext::drawSphere(void)
 	//glEnableVertexAttribArray(0);
 	//glEnableVertexAttribArray(1);
 }
+void OpenGLContext::drawSkybox(void)
+{
+	spaceskybox = new Skybox();
+	std::cout << "Created skybox " << spaceskybox->skybox_vao << "\n";
+	spaceskybox->createCubeMap(
+		"skybox_back6.png",
+		"skybox_front5.png",
+		"skybox_top3.png",
+		"skybox_bottom4.png",
+		"skybox_left2.png",
+		"skybox_right1.png",
+		&tex_cube
+		);
+	glEnableVertexAttribArray(glGetAttribLocation(skybox_program, "cube_texture")); // don't forget this!
+}
 void OpenGLContext::drawTexturedQuad(void)
 {
 	GLuint elements[] = {
@@ -445,11 +460,11 @@ bool OpenGLContext::createContext()
 	glEnable(GL_DEPTH_TEST); //enable depth testing
 	glDepthFunc(GL_LESS); //smaller values are closest
 	/* Tell GL to cull back faces, and that CW is front, CCW is back */
-	glEnable(GL_CULL_FACE); // cull face
-	glCullFace(GL_BACK); // cull back face
-	glFrontFace(GL_CW); // GL_CCW for counter clock-wise
+	//glEnable(GL_CULL_FACE); // cull face
+	//glCullFace(GL_BACK); // cull back face
+	//glFrontFace(GL_CW); // GL_CW for clockwise, GL_CCW for counter clock-wise
 
-	glClearColor(0.392f, 0.584f, 0.929f, 1.0f);
+	glClearColor(0.392f, 0.584f, 0.929f, 1.0f); //blank canvas colour
 	return true; // We have successfully created a context, return true  
 }
 void OpenGLContext::setupScene(void)
@@ -459,10 +474,12 @@ void OpenGLContext::setupScene(void)
 	/* Create and compile our GLSL program from the shaders */
 	texture_program = LoadShaders("texture_vs.glsl", "texture_fs.glsl");
 	shader_program = LoadShaders("test_vs.glsl", "test_fs.glsl");
+	skybox_program = LoadShaders("skybox_vs.glsl", "skybox_fs.glsl");
 	drawUnitAxes();
 	//drawSquarePyramid();
 	drawTexturedQuad();
 	drawSphere();
+	drawSkybox();
 }
 void OpenGLContext::renderScene(void)
 {
@@ -471,6 +488,18 @@ void OpenGLContext::renderScene(void)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	/* Update the viewport size for when window changes size */
 	glViewport(0, 0, g_gl_width, g_gl_height);
+
+	glDepthMask(GL_FALSE);
+	glUseProgram(skybox_program);
+	int tex_loc = glGetUniformLocation(skybox_program, "cube_texture");
+	/* assocaite the sampler in the shader with the desired texture unit */
+	glUniform1i(tex_loc, 2); // use active texture 0
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, tex_cube);
+	glBindVertexArray(spaceskybox->skybox_vao);
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+	glDepthMask(GL_TRUE);
+
 	/* draw 10u axes lines */
 	/* Set the active shader */
 	glUseProgram(shader_program);
@@ -481,7 +510,7 @@ void OpenGLContext::renderScene(void)
 	glUseProgram(0);
 	/* draw textured quad */
 	glUseProgram(texture_program);
-	int tex_loc = glGetUniformLocation(texture_program, "basic_texture");
+	tex_loc = glGetUniformLocation(texture_program, "basic_texture");
 	/* assocaite the sampler in the shader with the desired texture unit */
 	glUniform1i(tex_loc, 0); // use active texture 0
 	//glBindVertexArray(quad_vao);

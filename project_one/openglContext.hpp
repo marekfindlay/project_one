@@ -3,7 +3,7 @@
 
 /* Define function prototypes */
 #include "stdafx.h"
-#include <vector>
+#include "Skybox.h"
 extern bool FPS_COUNT;
 extern int g_gl_height;
 extern int g_gl_width;
@@ -30,7 +30,8 @@ public:
 	void renderScene(void); //render scene, the display method
 	void drawUnitAxes(void); //draws RGB XYZ unit axes
 	void drawSquarePyramid(void); // draws square based pyramid
-	void drawTexturedQuad(void);
+	void drawTexturedQuad(void); 
+	void drawSkybox(void);
 	void drawSphere(void);
 	void setViewMatrix(GLuint shader, glm::mat4 view_matrix); //Updates the view matrix in the provided shader
 	void setProjMatrix(GLuint shader, glm::mat4 proj_matrix); //Updates teh projection matrix in the provided shader
@@ -54,6 +55,12 @@ public:
 	unsigned int vboID[1]; // Our Vertex Buffer Object  
 	GLuint shader_program;
 	GLuint texture_program;
+	GLuint skybox_program;
+	GLuint tex_cube;
+
+	/* scene objects */
+	Skybox *spaceskybox;
+
 private:
 protected:
 
