@@ -120,6 +120,7 @@ int main(void)
 	openglContext.setProjMatrix(openglContext.shader_program, proj_matrix);
 	openglContext.setViewMatrix(openglContext.texture_program, view_matrix);
 	openglContext.setProjMatrix(openglContext.texture_program, proj_matrix);
+	openglContext.setModelMatrix(openglContext.texture_program, glm::mat4(1.0));
 
 	/*fps variables*/
 	if (FPS_COUNT)

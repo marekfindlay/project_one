@@ -1,8 +1,6 @@
 #pragma once
 #include "stdafx.h"
 
-const int space = 1;
-const int VertexCount = (90 / space) * (360 / space) * 4;
 class Sphere
 {
 public:

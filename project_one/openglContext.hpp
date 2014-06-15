@@ -34,6 +34,7 @@ public:
 	void drawSphere(void);
 	void setViewMatrix(GLuint shader, glm::mat4 view_matrix); //Updates the view matrix in the provided shader
 	void setProjMatrix(GLuint shader, glm::mat4 proj_matrix); //Updates teh projection matrix in the provided shader
+	void setModelMatrix(GLuint shader, glm::mat4 model_matrix); //Updates the model (world) matrix in the provided shader
 	void window_size_callback(GLFWwindow* window, int width, int height); //implementation of the window size callback
 	unsigned int lines_vbo = 0;
 	unsigned int pyramid_vbo = 0;

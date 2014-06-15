@@ -20,6 +20,7 @@ OpenGLContext::~OpenGLContext(void)
 void OpenGLContext::drawSphere(void)
 {
 	Sphere *mySphere = new Sphere();
+	mySphere->theta = 4.5f;
 	mySphere->CreateSphere();
 	char* file_name = "moonmap4k.jpg";
 	int x, y, n;
@@ -99,17 +100,28 @@ void OpenGLContext::drawSphere(void)
 	glEnableVertexAttribArray(glGetAttribLocation(texture_program, "vertex_position")); // don't forget this!
 	glEnableVertexAttribArray(glGetAttribLocation(texture_program, "basic_texture")); // don't forget this!
 	glEnableVertexAttribArray(glGetAttribLocation(texture_program, "texture_coordinates")); // don't forget this!
+	glEnableVertexAttribArray(glGetAttribLocation(texture_program, "vertex_normal")); // don't forget this!
 	unsigned int colours_vbo = 0;
 	glGenBuffers(1, &colours_vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, colours_vbo);
 	glBufferData(GL_ARRAY_BUFFER, mySphere->texcoords.size() * sizeof(glm::vec2), &mySphere->texcoords[0], GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, colours_vbo);
 	glVertexAttribPointer(glGetAttribLocation(texture_program, "vt"), 2, GL_FLOAT, GL_FALSE, 0, NULL);
 	/* Enable the vertex attributes as they are DISABLED by default. This means the colours would be off and you get a black object! */
 	glEnableVertexAttribArray(glGetAttribLocation(texture_program, "vt")); // don't forget this!
 	glEnableVertexAttribArray(glGetAttribLocation(texture_program, "vertex_position")); // don't forget this!
 	glEnableVertexAttribArray(glGetAttribLocation(texture_program, "basic_texture")); // don't forget this!
 	glEnableVertexAttribArray(glGetAttribLocation(texture_program, "texture_coordinates")); // don't forget this!
+	glEnableVertexAttribArray(glGetAttribLocation(texture_program, "vertex_normal")); // don't forget this!
+	unsigned int normals_vbo = 0;
+	glGenBuffers(1, &normals_vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, normals_vbo);
+	glBufferData(GL_ARRAY_BUFFER, mySphere->normals.size() * sizeof(glm::vec3), &mySphere->normals[0], GL_STATIC_DRAW);
+	glVertexAttribPointer(glGetAttribLocation(texture_program, "vertex_normal"), 3, GL_FLOAT, GL_FALSE, 0, NULL);
+	glEnableVertexAttribArray(glGetAttribLocation(texture_program, "vt")); // don't forget this!
+	glEnableVertexAttribArray(glGetAttribLocation(texture_program, "vertex_position")); // don't forget this!
+	glEnableVertexAttribArray(glGetAttribLocation(texture_program, "basic_texture")); // don't forget this!
+	glEnableVertexAttribArray(glGetAttribLocation(texture_program, "texture_coordinates")); // don't forget this!
+	glEnableVertexAttribArray(glGetAttribLocation(texture_program, "vertex_normal")); // don't forget this!
 
 
 	//std::cout << "elements size: " << mySphere->elements.size() << "\n";
@@ -494,14 +506,17 @@ void OpenGLContext::renderScene(void)
 
 void OpenGLContext::setViewMatrix(GLuint shader, glm::mat4 view_matrix)
 {
-	GLint uniView = glGetUniformLocation(shader, "view_matrix");
 	glUseProgram(shader);
-	glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(view_matrix));
+	glUniformMatrix4fv(glGetUniformLocation(shader, "view_matrix"), 1, GL_FALSE, glm::value_ptr(view_matrix));
 }
 void OpenGLContext::setProjMatrix(GLuint shader, glm::mat4 proj_matrix)
 {
-	GLint uniProj = glGetUniformLocation(shader, "proj_matrix");
 	glUseProgram(shader);
-	glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj_matrix));
+	glUniformMatrix4fv(glGetUniformLocation(shader, "proj_matrix"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
+}
+void OpenGLContext::setModelMatrix(GLuint shader, glm::mat4 model_matrix)
+{
+	glUseProgram(shader);
+	glUniformMatrix4fv(glGetUniformLocation(shader, "model_matrix"), 1, GL_FALSE, glm::value_ptr(model_matrix));
 }
 

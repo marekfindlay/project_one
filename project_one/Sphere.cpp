@@ -3,7 +3,7 @@
 
 Sphere::Sphere()
 {
-	texture_ratio = 2;
+	/* set default values for radius and theta */
 	radius = 5.0f;
 	theta = 4.5f; 
 }
