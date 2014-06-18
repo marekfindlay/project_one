@@ -29,7 +29,7 @@ public:
 	void setupScene(void); //All scene info setup here
 	void renderScene(void); //render scene, the display method
 	void drawUnitAxes(void); //draws RGB XYZ unit axes
-	void drawSquarePyramid(void); // draws square based pyramid
+	void drawSpaceship(void); // draws square based pyramid
 	void drawTexturedQuad(void); 
 	void drawSkybox(void);
 	void drawSphere(void);
@@ -60,7 +60,7 @@ public:
 
 	/* scene objects */
 	Skybox *spaceskybox;
-
+	Spaceship *monkey;
 private:
 protected:
 

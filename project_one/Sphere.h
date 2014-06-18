@@ -15,11 +15,7 @@ public:
 	float radius;
 	float theta;
 	void CreateSphere();
-
-
-
-
-
+	
 	GLuint texture[1];
 	double texture_ratio;
 	// initiate buffers
@@ -27,9 +23,7 @@ public:
 	GLuint normalbuffer;
 	GLuint uvbuffer;
 	GLuint vertexbuffer;
-
-
-
+	
 	// this variable will later be used to hold the number of indices
 	int size = 0;
 	GLuint getUvBuffer() { return uvbuffer; }

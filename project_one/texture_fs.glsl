@@ -9,10 +9,10 @@ out vec4 frag_colour;
 vec3 light_position_world  = vec3 (0.0, 100.0, 100.0);
 vec3 Ls = vec3 (1.0, 1.0, 1.0); // white specular colour
 vec3 Ld = vec3 (0.8, 0.8, 0.8); // dull white diffuse light colour
-vec3 La = vec3 (0.2, 0.2, 0.2); // grey ambient colour
+vec3 La = vec3 (0.05, 0.05, 0.05); // grey ambient colour
   
 // surface reflectance
-vec3 Ks = vec3 (0.1, 0.1, 0.1); // no reflect specular light
+vec3 Ks = vec3 (0.0, 0.0, 0.0); // no reflect specular light
 vec3 Kd = vec3 (0.7, 0.7, 0.7); // orange diffuse surface reflectance
 vec3 Ka = vec3 (1.0, 1.0, 1.0); // fully reflect ambient light
 float specular_exponent = 10.0; // specular 'power'

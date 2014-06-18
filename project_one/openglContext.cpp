@@ -275,7 +275,7 @@ void OpenGLContext::drawTexturedQuad(void)
 	glEnableVertexAttribArray(glGetAttribLocation(texture_program, "texture_coordinates")); // don't forget this!
 
 }
-void OpenGLContext::drawSquarePyramid(void)
+void OpenGLContext::drawSpaceship(void)
 {
 	float points[] = {
 		1.0f, 0.0f, 0.0f,
@@ -420,6 +420,7 @@ bool OpenGLContext::createContext()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	//glfwWindowHint(GLFW_DECORATED, GL_FALSE);
 	/* Enable 4x antialiasing */
 	glfwWindowHint(GLFW_SAMPLES, 4);
 
@@ -460,9 +461,9 @@ bool OpenGLContext::createContext()
 	glEnable(GL_DEPTH_TEST); //enable depth testing
 	glDepthFunc(GL_LESS); //smaller values are closest
 	/* Tell GL to cull back faces, and that CW is front, CCW is back */
-	//glEnable(GL_CULL_FACE); // cull face
-	//glCullFace(GL_BACK); // cull back face
-	//glFrontFace(GL_CW); // GL_CW for clockwise, GL_CCW for counter clock-wise
+	glEnable(GL_CULL_FACE); // cull face
+	glCullFace(GL_BACK); // cull back face
+	glFrontFace(GL_CW); // GL_CW for clockwise, GL_CCW for counter clock-wise
 
 	glClearColor(0.392f, 0.584f, 0.929f, 1.0f); //blank canvas colour
 	return true; // We have successfully created a context, return true  
@@ -476,10 +477,24 @@ void OpenGLContext::setupScene(void)
 	shader_program = LoadShaders("test_vs.glsl", "test_fs.glsl");
 	skybox_program = LoadShaders("skybox_vs.glsl", "skybox_fs.glsl");
 	drawUnitAxes();
-	//drawSquarePyramid();
-	drawTexturedQuad();
 	drawSphere();
 	drawSkybox();
+	monkey = new Spaceship();
+	State monkeyState = {
+		glm::vec4(10.0f, 10.0f, 0.0f, 1.0f),
+		glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)
+	};
+	Derivative monkeyDerivative = {
+		glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
+		glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)
+	};
+	monkey->createSpaceship(monkeyState, monkeyDerivative);
+	monkey->shader_program = shader_program;
+	drawSpaceship();
+
+	std::cout << "pyramid_vao " << pyramid_vao << "\n ";
+	std::cout << "quad_vao " << quad_vao << "\n ";
+	std::cout << "sphere_vao " << sphere_vao << "\n ";
 }
 void OpenGLContext::renderScene(void)
 {
@@ -500,9 +515,21 @@ void OpenGLContext::renderScene(void)
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 	glDepthMask(GL_TRUE);
 
+	//monkey draw
+	glUseProgram(shader_program);
+	setModelMatrix(shader_program, glm::translate(
+		glm::mat4(1.0f),
+		glm::vec3(monkey->state.position.xyz)));
+	glBindVertexArray(pyramid_vao);
+	glDrawArrays(GL_TRIANGLES, 0, 18);
+	// draw points 0-3 from the currently bound VAO with current in-use shader
+	glUseProgram(0);
 	/* draw 10u axes lines */
 	/* Set the active shader */
 	glUseProgram(shader_program);
+	setModelMatrix(shader_program, glm::translate(
+		glm::mat4(1.0f),
+		glm::vec3(0.0f)));
 	glBindVertexArray(vao);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, axes_ebo);
 	glDrawElements(GL_LINES, 6, GL_UNSIGNED_INT, 0);
@@ -526,7 +553,6 @@ void OpenGLContext::renderScene(void)
 	glBindVertexArray(sphere_vao);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sphere_ebo);
 	glDrawElements(GL_TRIANGLES, 19200, GL_UNSIGNED_INT, 0);
-	//glDrawArrays(GL_TRIANGLE_STRIP, 0, 45);
 	// update other events like input handling 
 	glfwPollEvents();
 	// put the stuff we've been drawing onto the display

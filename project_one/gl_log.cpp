@@ -92,6 +92,7 @@ void log_gl_params()
 		GL_MAX_VERTEX_UNIFORM_COMPONENTS,
 		GL_MAX_VIEWPORT_DIMS,
 		GL_STEREO,
+		GL_MAX_UNIFORM_BUFFER_BINDINGS,
 	};
 	const char* names[] = {
 		"GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS",
@@ -106,6 +107,7 @@ void log_gl_params()
 		"GL_MAX_VERTEX_UNIFORM_COMPONENTS",
 		"GL_MAX_VIEWPORT_DIMS",
 		"GL_STEREO",
+		"GL_MAX_UNIFORM_BUFFER_BINDINGS",
 	};
 	gl_log("GL Context Params:\n");
 	char msg[256];

@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #define GLM_FORCE_RADIANS
+#define GLM_SWIZZLE
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -22,6 +23,7 @@
 #include "gl_log.h"
 #include <tchar.h>
 #include "Skybox.h"
+#include "Spaceship.h"
 #include "shaders.hpp"
 #include "openglContext.hpp"
 #include "Camera.hpp"
@@ -29,5 +31,6 @@
 #include "vboindexer.hpp"
 #include "stb_image.h"
 #include <vector>
+#include <assert.h>
 
 // TODO: reference additional headers your program requires here
